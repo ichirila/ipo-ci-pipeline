@@ -1,0 +1,128 @@
+trigger:
+  branches:
+    include:
+      - main
+      - master
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  buildConfiguration: 'Release'
+  testResultsDir: '$(Agent.TempDirectory)/TestResults'
+
+stages:
+
+  # ──────────────────────────────────────────────
+  # STAGE 1 – BUILD
+  # ──────────────────────────────────────────────
+  - stage: Build
+    displayName: 'Build'
+    jobs:
+      - job: BuildJob
+        displayName: 'Restore & Build'
+        steps:
+
+          - task: UseDotNet@2
+            displayName: 'Use .NET SDK'
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'           # adjust if the sample targets a different version
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore NuGet packages'
+            inputs:
+              command: 'restore'
+              projects: '**/*.csproj'
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Build solution'
+            inputs:
+              command: 'build'
+              projects: '**/*.csproj'
+              arguments: '--configuration $(buildConfiguration) --no-restore'
+
+  # ──────────────────────────────────────────────
+  # STAGE 2 – TEST
+  # ──────────────────────────────────────────────
+  - stage: Test
+    displayName: 'Test'
+    dependsOn: Build
+    jobs:
+      - job: UnitTestJob
+        displayName: 'Run Unit Tests'
+        steps:
+
+          - task: UseDotNet@2
+            displayName: 'Use .NET SDK'
+            inputs:
+              packageType: 'sdk'
+              version: '8.x'
+              installationPath: $(Agent.ToolsDirectory)/dotnet
+
+          - task: DotNetCoreCLI@2
+            displayName: 'Restore NuGet packages'
+            inputs:
+              command: 'restore'
+              projects: '**/*.csproj'
+
+          # Run tests and output results in TRX format so Azure DevOps
+          # can parse and display them in the Tests tab of the pipeline GUI.
+          - task: DotNetCoreCLI@2
+            displayName: 'Run unit tests'
+            inputs:
+              command: 'test'
+              projects: '**/*Tests*.csproj'
+              arguments: >-
+                --configuration $(buildConfiguration)
+                --no-restore
+                --logger "trx;LogFileName=TestResults.trx"
+                --results-directory "$(testResultsDir)"
+              publishTestResults: false   # we publish manually below for full control
+
+          # Publish the TRX results so they appear in the pipeline GUI
+          - task: PublishTestResults@2
+            displayName: 'Publish test results'
+            condition: always()           # publish even if tests fail
+            inputs:
+              testResultsFormat: 'VSTest'
+              testResultsFiles: '$(testResultsDir)/**/*.trx'
+              mergeTestResults: true
+              failTaskOnFailedTests: true
+              testRunTitle: 'Unit Tests – $(Build.BuildNumber)'
+
+  # ──────────────────────────────────────────────
+  # STAGE 3 – DEPLOYMENT PLACEHOLDER (scripted)
+  # ──────────────────────────────────────────────
+  - stage: Deploy
+    displayName: 'Deploy'
+    dependsOn: Test
+    jobs:
+      - job: DeployPlaceholderJob
+        displayName: 'Deployment placeholder'
+        steps:
+
+          # Scripting requirement fulfilled: Bash script writes the TODO message
+          # to the pipeline log, then exits cleanly.
+          - task: Bash@3
+            displayName: 'Write TODO deployment message'
+            inputs:
+              targetType: 'inline'
+              script: |
+                #!/usr/bin/env bash
+                set -euo pipefail
+
+                echo "=============================================="
+                echo "TODO – Deployment"
+                echo "=============================================="
+                echo ""
+                echo "This stage is a placeholder."
+                echo "A deployment step should be implemented here,"
+                echo "e.g. publishing to an Azure App Service,"
+                echo "pushing a Docker image, or deploying via Helm."
+                echo ""
+                echo "Build number : $(Build.BuildNumber)"
+                echo "Branch       : $(Build.SourceBranchName)"
+                echo "Triggered by : $(Build.RequestedFor)"
+                echo "Timestamp    : $(date -u +'%Y-%m-%dT%H:%M:%SZ')"
