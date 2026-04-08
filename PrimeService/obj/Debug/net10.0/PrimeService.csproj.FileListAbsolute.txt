@@ -1,0 +1,12 @@
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/bin/Debug/net10.0/PrimeService.deps.json
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/bin/Debug/net10.0/PrimeService.dll
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/bin/Debug/net10.0/PrimeService.pdb
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/PrimeService.GeneratedMSBuildEditorConfig.editorconfig
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/PrimeService.AssemblyInfoInputs.cache
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/PrimeService.AssemblyInfo.cs
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/PrimeService.csproj.CoreCompileInputs.cache
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/PrimeService.sourcelink.json
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/PrimeService.dll
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/refint/PrimeService.dll
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/PrimeService.pdb
+/Users/ioanchirila/Projects/ipo-ci-pipeline/sample-unit-testing-using-dotnet-test/PrimeService/obj/Debug/net10.0/ref/PrimeService.dll
