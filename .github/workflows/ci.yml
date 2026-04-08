@@ -10,6 +10,10 @@ on:
       - main
       - master
 
+permissions:
+  contents: read
+  checks: write
+
 jobs:
 
   # ──────────────────────────────────────────────
@@ -26,13 +30,13 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'
+          dotnet-version: '10.x'
 
       - name: Restore NuGet packages
-        run: dotnet restore
+        run: dotnet restore sample-unit-testing-using-dotnet-test
 
       - name: Build solution
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build sample-unit-testing-using-dotnet-test --configuration Release --no-restore
 
   # ──────────────────────────────────────────────
   # JOB 2 – TEST
@@ -49,14 +53,15 @@ jobs:
       - name: Setup .NET SDK
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.x'
+          dotnet-version: '10.x'
 
       - name: Restore NuGet packages
-        run: dotnet restore
+        run: dotnet restore sample-unit-testing-using-dotnet-test
 
       - name: Run unit tests
         run: |
-          dotnet test --configuration Release \
+          dotnet test sample-unit-testing-using-dotnet-test \
+            --configuration Release \
             --no-restore \
             --logger "trx;LogFileName=TestResults.trx" \
             --results-directory ./TestResults
@@ -69,6 +74,7 @@ jobs:
           path: ./TestResults/**/*.trx
           reporter: dotnet-trx
           fail-on-error: true
+          token: ${{ secrets.GITHUB_TOKEN }}
 
   # ──────────────────────────────────────────────
   # JOB 3 – DEPLOY PLACEHOLDER (scripted)
