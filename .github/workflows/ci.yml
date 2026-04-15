@@ -33,10 +33,10 @@ jobs:
           dotnet-version: '10.x'
 
       - name: Restore NuGet packages
-        run: dotnet restore sample-unit-testing-using-dotnet-test
+        run: dotnet restore unit-testing-using-dotnet-test
 
       - name: Build solution
-        run: dotnet build sample-unit-testing-using-dotnet-test --configuration Release --no-restore
+        run: dotnet build unit-testing-using-dotnet-test --configuration Release --no-restore
 
   # ──────────────────────────────────────────────
   # JOB 2 – TEST
@@ -56,11 +56,11 @@ jobs:
           dotnet-version: '10.x'
 
       - name: Restore NuGet packages
-        run: dotnet restore sample-unit-testing-using-dotnet-test
+        run: dotnet restore unit-testing-using-dotnet-test
 
       - name: Run unit tests
         run: |
-          dotnet test sample-unit-testing-using-dotnet-test \
+          dotnet test unit-testing-using-dotnet-test \
             --configuration Release \
             --no-restore \
             --logger "trx;LogFileName=TestResults.trx" \
